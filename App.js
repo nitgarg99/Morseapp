@@ -26,9 +26,29 @@ class MorseCity extends Component {
     }
 }
 
-const RootStack = createStackNavigator({
-    Home: MorseCity
-});
+class MessageScreen extends Component {
+    render() {
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: '#51667a', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{alignSelf: 'center', alignItems: 'center', justifyContent: 'center', position: 'absolute'}} >
+                    <Text style={{flex: 1,}}>
+                        Tap anywhere on screen
+                    </Text>
+                </View>
+            </SafeAreaView>
+        );
+    }
+}
+
+const RootStack = createStackNavigator(
+    {
+    Home: MorseCity,
+    Message: MessageScreen,
+    },
+    {
+        initialRouteName: 'Message',
+    }
+);
 
 export default class App extends Component {
     render() {
