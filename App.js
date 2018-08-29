@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, Alert, Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import firebase from 'react-native-firebase';
 
 class MorseCity extends Component {
     _onPressButton() {
@@ -20,6 +21,18 @@ class MorseCity extends Component {
                     </View>
                 </View>
                 <View style={{backgroundColor: '#26bb90', flex: 20}}>
+                </View>
+            </SafeAreaView>
+        );
+    }
+}
+
+class LoginScreen extends Component {
+    render() {
+        return (
+            <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center'}}>
+                <View style{{flex: 1, backgroundColor '#bc7777', justifyContent: 'center', position: 'absolute'}} >
+                    <TextInput onChangeText={(text) => this.setState({text})} value={this.state.text} />
                 </View>
             </SafeAreaView>
         );
@@ -49,9 +62,10 @@ const RootStack = createStackNavigator(
     {
     Home: MorseCity,
     Message: MessageScreen,
+    Login: LoginScreen,
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'Login',
     }
 );
 
