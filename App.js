@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { AppRegistry, Alert, Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { AppRegistry, Alert, Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
-import firebase from 'react-native-firebase';
 
 class MorseCity extends Component {
     _onPressButton() {
@@ -28,11 +27,26 @@ class MorseCity extends Component {
 }
 
 class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            username: '', 
+            password: '',
+            learning: 'We are learning!',
+        };
+    }
+    _onPressSubmit() {
+
+    } 
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center'}}>
-                <View style{{flex: 1, backgroundColor '#bc7777', justifyContent: 'center', position: 'absolute'}} >
-                    <TextInput onChangeText={(text) => this.setState({text})} value={this.state.text} />
+                <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center', position: 'absolute'}} >
+                    <TextInput onChangeText={(text) => this.setState({username: text})} value={this.state.username}  placeholder='Username'/>
+                    <TextInput onChangeText={(text) => this.setState({password: text})} value={this.state.password}  placeholder='Password' secureTextEntry={true}/>
+                    <TouchableOpacity style={{flex:1}} onPress={this._onPressSubmit.bind(this)}>
+                        <Text>Submit</Text>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         );
