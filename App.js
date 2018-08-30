@@ -66,30 +66,36 @@ class SignupScreen extends Component {
         this.state = { 
             username: '', 
             password: '',
+            confirmPassword: '',
             errorMessage: '',
 
         };
     }
     _onPressSignup() {
         this.setState({errorMessage: ''});
-        firebase.auth().createUserWithEmailAndPassword(this.state.username, this.state.password).catch((error) => {
-            this.setState({errorMessage: error.message})
-        });
+        if (this.state.password == this.state.confirmPassword) {
+            firebase.auth().createUserWithEmailAndPassword(this.state.username + '@test.com', this.state.password).catch((error) => {
+                this.setState({errorMessage: error.message})
+            });
+        } else {
+            this.setState({errorMessage: 'Passwords do not match.'});
+        }
 
     } 
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center', position: 'absolute'}} >
-                    <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center', }} >
-                        <TextInput onChangeText={(username) => this.setState({username})} value={this.state.username}  placeholder='Username'/>
-                        <TextInput onChangeText={(password) => this.setState({password})} value={this.state.password}  placeholder='Password' secureTextEntry={true}/>
+                <View style={{flex: 1, backgroundColor: '#ff2', justifyContent: 'center', position: 'absolute'}} >
+                    <View style={{flex: 1, backgroundColor: '#fbf', justifyContent: 'center' }} >
+                        <TextInput onChangeText={(username) => this.setState({username})} value={this.state.username}  placeholder='Username' textAlign='center'/>
+                        <TextInput onChangeText={(password) => this.setState({password})} value={this.state.password}  placeholder='Password' secureTextEntry={true} textAlign='center'/>
+                        <TextInput onChangeText={(confirmPassword) => this.setState({confirmPassword})} value={this.state.confirmPassword}  placeholder='Confirm Password' secureTextEntry={true} textAlign='center'/>
                         <TouchableOpacity style={{flex:1}} onPress={this._onPressSignup.bind(this)}>
-                            <Text>Sign up</Text>
+                            <Text style={{alignSelf:'center'}}>Sign up</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{flex: 1}}>
-                        <Text>{this.state.errorMessage}</Text>
+                        <Text style={{color: 'red'}}>{this.state.errorMessage}</Text>
                     </View>
                 </View>
             </SafeAreaView>
