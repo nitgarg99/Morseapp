@@ -1,6 +1,6 @@
 ## To Do:
 
-# In order of importance
+### In order of importance
 * User auth uses patch-up code, fix for scalability (auth code in signup class)
 * Style changes
 * Code clean-up
