@@ -142,15 +142,25 @@ class MessageScreen extends Component {
     }
     render() {
         return (
-            <TouchableOpacity style={{flex: 1}} onPress={this._onPressButton}>
-                <SafeAreaView style={{flex: 1, backgroundColor: '#51667a', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{alignSelf: 'center', alignItems: 'center', justifyContent: 'center', position: 'absolute'}} >
-                        <Text style={{flex: 1,}}>
+
+            <SafeAreaView style={{flex: 1, backgroundColor: '#51667a', }}>
+                <View style={{flex: 1, flexDirection: 'row', backgroundColor: '#ff32ba', justifyContent: 'center', alignItems: 'flex-start'}}>
+                    <Text style={{fontSize:50}} adjustsFontSizeToFit={true}>To: </Text>
+                    <TextInput placeholder='Enter recepient'/>
+                </View>
+                <TouchableOpacity style={{flex: 25}} onPress={this._onPressButton}>
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',  backgroundColor: '#23bca2'}} >
+                        <Text style={{flex: 1, alignSelf: 'center', position: 'absolute'}}>
                             Tap anywhere on screen
                         </Text>
                     </View>
-                </SafeAreaView>
-            </TouchableOpacity>
+                </TouchableOpacity>
+                <View style={{flex: 1, flexDirection: 'row', backgroundColor: '#ff32ba', justifyContent: 'center', alignItems: 'flex-start'}}>
+                    <TouchableOpacity>
+                        <Text> Send </Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         );
     }
 }
@@ -163,7 +173,7 @@ const RootStack = createStackNavigator(
         Signup: SignupScreen,
     },
     {
-        initialRouteName: 'Login',
+        initialRouteName: 'Message',
         headerMode: 'none',
     }
 );
