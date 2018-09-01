@@ -1,6 +1,6 @@
 ## To Do:
 
-* User auth uses patch-up code, fix for scalability (located in signup class)
+* User auth uses patch-up code, fix for scalability (auth code in signup class)
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 

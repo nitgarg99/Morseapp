@@ -8,9 +8,16 @@ class MorseCity extends Component {
         this.props.navigation.navigate('Message');
     }
 
+    _onPressSignOut() {
+        let user = firebase.auth().currentUser;
+        firebase.auth().signOut();
+        console.log(user.email + ' logged out!');
+    }
+   
+
     render() {
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#D1F2EB'}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
                 <View style={styles.taskbar}>
                     <View style={{flex: 9, backgroundColor: '#987fba'}}>
                     </View>
@@ -19,8 +26,13 @@ class MorseCity extends Component {
                             <Image resizeMode='contain' source={require('./images/message.png')} style={styles.icon} />
                         </TouchableOpacity>
                     </View>
+                    <View style={{flex: 1, backgroundColor: '#ffffff', }}>
+                        <TouchableOpacity style={{flex:1}} onPress={this._onPressSignOut.bind(this)}>
+                            <Text> Sign Out </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{backgroundColor: '#26bb90', flex: 20}}>
+                <View style={{backgroundColor: '#ffffff', flex: 20}}>
                 </View>
             </SafeAreaView>
         );
@@ -33,10 +45,20 @@ class LoginScreen extends Component {
         this.state = { 
             username: '', 
             password: '',
-            learning: 'We are learning!',
+            errorMessage: '',
         };
     }
     _onPressSubmit() {
+        let logged = true
+        this.setState({errorMessage: ''});
+        firebase.auth().signInWithEmailAndPassword(this.state.username + '@test.com', this.state.password).catch((error) => {
+            this.setState({errorMessage: error.message})
+        }); 
+        let user = firebase.auth().currentUser;
+        if (user) {
+            this.props.navigation.navigate('Home');
+            console.log(user.email);
+        }
 
     } 
     _onPressSignup() {
@@ -45,15 +67,20 @@ class LoginScreen extends Component {
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff', justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{flex: 1, backgroundColor: '#fff', justifyContent: 'center', position: 'absolute'}} >
-                    <TextInput onChangeText={(username) => this.setState({username})} value={this.state.username}  placeholder='Username'/>
-                    <TextInput onChangeText={(password) => this.setState({password})} value={this.state.password}  placeholder='Password' secureTextEntry={true}/>
-                    <TouchableOpacity style={{flex:1}} onPress={this._onPressSubmit.bind(this)}>
-                        <Text>Submit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{flex:1}} onPress={this._onPressSignup.bind(this)}>
-                        <Text>Sign up</Text>
-                    </TouchableOpacity>
+                <View style={{flex: 1, backgroundColor: '#ff2', justifyContent: 'center', position: 'absolute'}} >
+                    <View style={{flex: 1, backgroundColor: '#fbf', justifyContent: 'center' }}>
+                        <TextInput onChangeText={(username) => this.setState({username})} value={this.state.username}  placeholder='Username' textAlign='center'/>
+                        <TextInput onChangeText={(password) => this.setState({password})} value={this.state.password}  placeholder='Password' secureTextEntry={true} textAlign='center'/>
+                        <TouchableOpacity style={{flex:1}} onPress={this._onPressSubmit.bind(this)}>
+                            <Text style={{alignSelf: 'center'}}>Submit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{flex:1}} onPress={this._onPressSignup.bind(this)}>
+                            <Text style={{alignSelf: 'center'}}>Sign up</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text style={{color: 'red'}}> {this.state.errorMessage}</Text>
+                    </View>
                 </View>
             </SafeAreaView>
         );
@@ -72,15 +99,21 @@ class SignupScreen extends Component {
         };
     }
     _onPressSignup() {
+        let logged = true;
         this.setState({errorMessage: ''});
         if (this.state.password == this.state.confirmPassword) {
             firebase.auth().createUserWithEmailAndPassword(this.state.username + '@test.com', this.state.password).catch((error) => {
                 this.setState({errorMessage: error.message})
+                logged = false;
             });
         } else {
             this.setState({errorMessage: 'Passwords do not match.'});
+            logged = false;
         }
 
+        if (logged) {
+            this.props.navigation.navigate('Home');
+        }
     } 
     render() {
         return (
@@ -130,6 +163,7 @@ const RootStack = createStackNavigator(
     },
     {
         initialRouteName: 'Login',
+        headerMode: 'none',
     }
 );
 
