@@ -1,3 +1,9 @@
+/* If you are an employer judging my coding style from this, I'm sorry for this mess.
+ * I still have to create style sheets to clean up all the 'style = {{insert mess here}}'
+ * and I will be moving the screens into seperate classes. Hopefully that eases your worries! 
+ *
+ * If you would like to see some neater code, checkout the alarm project on my github. */
+
 import React, { Component } from 'react';
 import { AppRegistry, Alert, Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
