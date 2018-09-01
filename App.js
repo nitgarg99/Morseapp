@@ -12,6 +12,7 @@ class MorseCity extends Component {
         let user = firebase.auth().currentUser;
         firebase.auth().signOut();
         console.log(user.email + ' logged out!');
+        this.props.navigation.navigate('Login');
     }
    
 
@@ -49,17 +50,17 @@ class LoginScreen extends Component {
         };
     }
     _onPressSubmit() {
-        let logged = true
+        let logged = true;
         this.setState({errorMessage: ''});
-        firebase.auth().signInWithEmailAndPassword(this.state.username + '@test.com', this.state.password).catch((error) => {
-            this.setState({errorMessage: error.message})
-        }); 
-        let user = firebase.auth().currentUser;
-        if (user) {
-            this.props.navigation.navigate('Home');
-            console.log(user.email);
-        }
-
+        firebase.auth().signInWithEmailAndPassword(this.state.username + '@test.com', this.state.password).then(
+            ((user) => {
+                console.log('Signed in ' + this.state.username);
+                this.props.navigation.navigate('Home');
+            }),
+            ((error) => {
+                this.setState(errorMessage: error.message);
+            })
+        );
     } 
     _onPressSignup() {
         this.props.navigation.navigate('Signup');
