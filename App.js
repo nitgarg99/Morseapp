@@ -143,6 +143,12 @@ class SignupScreen extends Component {
     }
 }
 class MessageScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            message: [],
+        };
+    }
     _onPressButton() {
         Alert.alert('Tap!');
     }
