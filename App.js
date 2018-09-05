@@ -151,19 +151,26 @@ class MessageScreen extends Component {
             message: [],
         };
     }
-    _onPressButton() {
+    _onPressMessage() {
         if (this.state.messageStart == false) {
             this.setState({
-                messageStart:  true
-                morseTime: Date.now()
-            })
+                messageStart:  true,    
+                morseTime: Date.now(),
+            });
         }
         else {
+            this.state.message.push(Date.now() - this.state.morseTime);
+            //Debug: console.log(this.state.message.length);
             this.setState({
-                message: message.push(Date.now() - this.state.morseTime)
-                morseTime: Date.now()
-            })
+                morseTime: Date.now(),
+            });
+        }
     }
+    _onSend(){
+        //Debug: console.log(this.state.message);
+    }
+
+
     render() {
         return (
 
@@ -172,7 +179,7 @@ class MessageScreen extends Component {
                     <Text style={{fontSize:50}} adjustsFontSizeToFit={true}>To: </Text>
                     <TextInput placeholder='Enter recepient'/>
                 </View>
-                <TouchableOpacity style={{flex: 25}} onPress={this._onPressButton.bind(this)}>
+                <TouchableOpacity style={{flex: 25}} onPress={this._onPressMessage.bind(this)}>
                     <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',  backgroundColor: '#23bca2'}} >
                         <Text style={{flex: 1, alignSelf: 'center', position: 'absolute'}}>
                             Tap anywhere on screen
@@ -180,7 +187,7 @@ class MessageScreen extends Component {
                     </View>
                 </TouchableOpacity>
                 <View style={{flex: 1, flexDirection: 'row', backgroundColor: '#ff32ba', justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this._onSend.bind(this)}>
                         <Text> Send </Text>
                     </TouchableOpacity>
                 </View>
