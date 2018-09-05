@@ -146,11 +146,23 @@ class MessageScreen extends Component {
     constructor(props) {
         super(props);
         this.state = { 
+            messageStart: false,
+            morseTime: 0,
             message: [],
         };
     }
     _onPressButton() {
-        Alert.alert('Tap!');
+        if (this.state.messageStart == false) {
+            this.setState({
+                messageStart:  true
+                morseTime: Date.now()
+            })
+        }
+        else {
+            this.setState({
+                message: message.push(Date.now() - this.state.morseTime)
+                morseTime: Date.now()
+            })
     }
     render() {
         return (
@@ -160,7 +172,7 @@ class MessageScreen extends Component {
                     <Text style={{fontSize:50}} adjustsFontSizeToFit={true}>To: </Text>
                     <TextInput placeholder='Enter recepient'/>
                 </View>
-                <TouchableOpacity style={{flex: 25}} onPress={this._onPressButton}>
+                <TouchableOpacity style={{flex: 25}} onPress={this._onPressButton.bind(this)}>
                     <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',  backgroundColor: '#23bca2'}} >
                         <Text style={{flex: 1, alignSelf: 'center', position: 'absolute'}}>
                             Tap anywhere on screen
