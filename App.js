@@ -64,7 +64,7 @@ class LoginScreen extends Component {
                 this.props.navigation.navigate('Home');
             }),
             ((error) => {
-                this.setState(errorMessage: error.message);
+                this.setState({errorMessage: error.message}); 
             })
         );
     } 
@@ -151,6 +151,7 @@ class MessageScreen extends Component {
             messageStart: false,
             morseTime: 0,
             message: [],
+            recepient: '',
         };
     }
     _onPressMessage() {
@@ -170,6 +171,17 @@ class MessageScreen extends Component {
     }
     _onSend(){
         //Debug: console.log(this.state.message);
+        let username = firebase.auth().currentUser.email;
+        username = username.substring(0,username.length - 9) //'@test.com' has length 9
+        console.log(username);
+        firebaseRef = firebase.database().ref().child(username).child(this.state.recepient);
+        firebaseRef.push(this.state.message);
+        console.log('pushed');
+        this.setState({
+            messageStart: false,
+            morseTime: Date.now(),
+            message: []
+        });
     }
 
 
@@ -179,7 +191,7 @@ class MessageScreen extends Component {
             <SafeAreaView style={{flex: 1, backgroundColor: '#51667a', }}>
                 <View style={{flex: 1, flexDirection: 'row', backgroundColor: '#ff32ba', justifyContent: 'center', alignItems: 'flex-start'}}>
                     <Text style={{fontSize:50}} adjustsFontSizeToFit={true}>To: </Text>
-                    <TextInput placeholder='Enter recepient'/>
+                    <TextInput onChangeText={(recepient) => this.setState({recepient})} value={this.state.recepient} placeholder='Enter recepient'/>
                 </View>
                 <TouchableOpacity style={{flex: 25}} onPress={this._onPressMessage.bind(this)}>
                     <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',  backgroundColor: '#23bca2'}} >
