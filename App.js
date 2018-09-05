@@ -109,18 +109,20 @@ class SignupScreen extends Component {
         let logged = true;
         this.setState({errorMessage: ''});
         if (this.state.password == this.state.confirmPassword) {
-            firebase.auth().createUserWithEmailAndPassword(this.state.username + '@test.com', this.state.password).catch((error) => {
-                this.setState({errorMessage: error.message})
-                logged = false;
-            });
+            firebase.auth().createUserWithEmailAndPassword(this.state.username + '@test.com', this.state.password).then(
+                ((user) => {
+                    console.log('Signed up ' + this.state.username);
+                    this.props.navigation.navigate('Home');
+                }),
+            ((error) => {
+                this.setState({errorMessage: error.message});
+            })
+            );
         } else {
             this.setState({errorMessage: 'Passwords do not match.'});
             logged = false;
         }
 
-        if (logged) {
-            this.props.navigation.navigate('Home');
-        }
     } 
     render() {
         return (
@@ -204,7 +206,7 @@ const RootStack = createStackNavigator(
         Signup: SignupScreen,
     },
     {
-        initialRouteName: 'Message',
+        initialRouteName: 'Login',
         headerMode: 'none',
     }
 );
