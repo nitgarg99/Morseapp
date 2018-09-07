@@ -23,6 +23,15 @@ class MorseCity extends Component {
    
 
     render() {
+        let user = firebase.auth().currentUser;
+        username = username.substring(0,username.length - 9); //'@test.com' has length 9
+        firebaseRef = firebase.database().ref().child(this.state.recepient).child('Most recent chats');
+        let recentChats = [];
+        firbaseRef.once('value')
+            .then((dataSnapshot) => {
+                recentChats = dataSnapshot.val();
+            });
+        console.log('recentChats = ' + recentChats);
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
                 <View style={styles.taskbar}>
