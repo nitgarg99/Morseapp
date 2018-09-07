@@ -23,20 +23,20 @@ class MorseCity extends Component {
    
 
     render() {
-        let user = firebase.auth().currentUser;
-        username = username.substring(0,username.length - 9); //'@test.com' has length 9
-        firebaseRef = firebase.database().ref().child(this.state.recepient).child('Most recent chats');
-        let recentChats = [];
-        firbaseRef.once('value')
+        user = firebase.auth().currentUser;
+        username = user.email.substring(0,user.email.length - 9); //'@test.com' has length 9
+        firebaseRef = firebase.database().ref().child(username).child('Most recent chats');
+        recentChats = [];
+        firebaseRef.once('value')
             .then((dataSnapshot) => {
                 recentChats = dataSnapshot.val();
+                console.log(dataSnapshot.val());
             });
         console.log('recentChats = ' + recentChats);
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
                 <View style={styles.taskbar}>
                     <View style={{flex: 9, backgroundColor: '#987fba'}}>
-                        <!-- Insert message reading code -->
                     </View>
                     <View style={{flex: 1, backgroundColor: '#ffffff', }}>
                         <TouchableOpacity style={{flex:1}} onPress={this._onPressButton.bind(this)}>
@@ -181,15 +181,36 @@ class MessageScreen extends Component {
     }
     _onSend(){
         //Debug: console.log(this.state.message);
-        let username = firebase.auth().currentUser.email;
+        username = firebase.auth().currentUser.email;
         username = username.substring(0,username.length - 9) //'@test.com' has length 9
+        recepient = this.state.recepient.toLowerCase();
         console.log(username);
-        firebaseRef = firebase.database().ref().child(username).child(this.state.recepient);
+        firebaseRef = firebase.database().ref().child(username).child(recepient);
         firebaseRef.push(this.state.message);
-        firebaseRef = firebase.database().ref().child(this.state.recepient).child(username);
+        firebaseRef = firebase.database().ref().child(recepient).child(username);
         firebaseRef.push(this.state.message);
-        firebaseRef = firebase.database().ref().child(this.state.recepient).child('Most recent chats');
-        fireBaseRef.push(username);
+        firebaseRef = firebase.database().ref().child(recepient).child('Most recent chats');
+        firebaseRef.once('value').then((dataSnapshot) => {
+            currentChats = dataSnapshot.val();
+            len = Object.keys(currentChats).length
+            if len < 5 {
+                currentChats[len] = username;
+            } else {
+                /* Check if username is in recent chats */
+                startIndex = 0; //starting index for when we enter the shifting loop
+                for (i = 0; i < len; i++) {
+                    if currentChats[i] == username {
+                        startIndex = [i];
+                    }
+                }
+                //Shift loop time
+                for (i = startIndex; i < len - 1; i++) {
+                    currentChats[i] = currentChats[i+1];
+                }
+                currentChats[len - 1] = username;
+            }
+        });
+
         this.setState({
             messageStart: false,
             morseTime: Date.now(),
