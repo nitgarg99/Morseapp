@@ -27,6 +27,7 @@ class MorseCity extends Component {
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
                 <View style={styles.taskbar}>
                     <View style={{flex: 9, backgroundColor: '#987fba'}}>
+                        <!-- Insert message reading code -->
                     </View>
                     <View style={{flex: 1, backgroundColor: '#ffffff', }}>
                         <TouchableOpacity style={{flex:1}} onPress={this._onPressButton.bind(this)}>
@@ -176,7 +177,10 @@ class MessageScreen extends Component {
         console.log(username);
         firebaseRef = firebase.database().ref().child(username).child(this.state.recepient);
         firebaseRef.push(this.state.message);
-        console.log('pushed');
+        firebaseRef = firebase.database().ref().child(this.state.recepient).child(username);
+        firebaseRef.push(this.state.message);
+        firebaseRef = firebase.database().ref().child(this.state.recepient).child('Most recent chats');
+        fireBaseRef.push(username);
         this.setState({
             messageStart: false,
             morseTime: Date.now(),
