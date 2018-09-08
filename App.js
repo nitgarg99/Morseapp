@@ -32,7 +32,6 @@ class MorseCity extends Component {
                 recentChats = dataSnapshot.val();
                 console.log(dataSnapshot.val());
             });
-        console.log('recentChats = ' + recentChats);
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
                 <View style={styles.taskbar}>
@@ -50,6 +49,21 @@ class MorseCity extends Component {
                     </View>
                 </View>
                 <View style={{backgroundColor: '#ffffff', flex: 20}}>
+                    <View style={styles.messageBox}>
+                        <Text> Test </Text>
+                    </View>
+                    <View style={styles.messageBox}>
+                        <Text> Test </Text>
+                    </View>
+                    <View style={styles.messageBox}>
+                        <Text> Test </Text>
+                    </View>
+                    <View style={styles.messageBox}>
+                        <Text> Test </Text>
+                    </View>
+                    <View style={styles.messageBox}>
+                        <Text> Test </Text>
+                    </View>
                 </View>
             </SafeAreaView>
         );
@@ -193,13 +207,13 @@ class MessageScreen extends Component {
         firebaseRef.once('value').then((dataSnapshot) => {
             currentChats = dataSnapshot.val();
             len = Object.keys(currentChats).length
-            if len < 5 {
+            if (len < 5) {
                 currentChats[len] = username;
             } else {
                 /* Check if username is in recent chats */
                 startIndex = 0; //starting index for when we enter the shifting loop
                 for (i = 0; i < len; i++) {
-                    if currentChats[i] == username {
+                    if (currentChats[i] == username) {
                         startIndex = [i];
                     }
                 }
@@ -282,6 +296,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         backgroundColor: '#abb2b9',
+    },
+    messageBox: {
+        flex: 1,
+        backgroundColor: '#fff',
+        borderColor: '#000',
+        borderWidth: 1,
     },
 });
 
